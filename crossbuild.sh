@@ -40,6 +40,13 @@ make
 # Installation
 make install
 
+# Cross compile one example
+cd ../examples
+$HOST-gcc find_all.c -o find_all.exe -I ../src -L $PREFIX/lib -L $HOME/.win/libusb/lib -static -lftdi1 -lusb-1.0
+
+# Move the example to the main directory
+mv find_all.exe $WORK
+
 # Create the tarball
 cd $PREFIX
 tar vzcf $TARBALL *
