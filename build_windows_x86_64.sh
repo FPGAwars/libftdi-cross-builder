@@ -13,6 +13,7 @@ VERSION=1
 PACKNAME=$NAME-$ARCH-$VERSION
 
 BUILD_DIR=build_$ARCH
+BUILD_DATA_DIR=build-data
 PACK_DIR=packages
 
 TARBALL=$PWD/$BUILD_DIR/$PACKNAME.tar.gz
@@ -42,7 +43,7 @@ cp -r $WORK/$NAME .
 
 # Prepare for building
 cd $NAME
-cp $WORK/toolchain-mingw32.cmake .
+cp $WORK/$BUILD_DATA_DIR/$ARCH/toolchain-mingw32.cmake .
 
 mkdir -p build; cd build
 
