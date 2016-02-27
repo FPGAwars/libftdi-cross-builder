@@ -20,7 +20,7 @@ PACK_DIR=packages
 
 TARBALL=$PWD/$BUILD_DIR/$PACKNAME.tar.gz
 ZIPBALL=$PWD/$BUILD_DIR/$PACKNAME.zip
-ZIPEXAMPLE=find_all-example-$ARCH-$VERSION.zip
+TAREXAMPLE=find_all-example-$ARCH-$VERSION.tar.gz
 
 GITREPO=git://developer.intra2net.com/libftdi
 
@@ -48,5 +48,5 @@ cd $NAME/examples
 gcc -m32 find_all.c -o find_all -static  -L /usr/lib/i386-linux-gnu  -lftdi -lusb
 
 # Zip the .exe file and move it to the main directory
-zip $ZIPEXAMPLE find_all
-mv $ZIPEXAMPLE $WORK/$PACK_DIR
+tar vzcf $TAREXAMPLE find_all
+mv $TAREXAMPLE $WORK/$PACK_DIR
