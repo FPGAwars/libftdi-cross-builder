@@ -25,6 +25,26 @@ GITREPO=git://developer.intra2net.com/libftdi
 # Store current dir
 WORK=$PWD
 
+# -- TARGET: CLEAN. Remove the build dir and the generated packages
+# --  then exit
+if [ "$1" == "clean" ]; then
+  echo "-----> CLEAN"
+
+  # Remove the build directory
+  rm -f -r $BUILD_DIR
+
+  # Remove the packages generated
+  rm -f $PWD/$PACK_DIR/$EXAMPLE-$ARCH-*.tar.gz
+
+  # Remove the installed libftdi
+  cd $PREFIX
+  rm -f -r $PREFIX/include/libftdi1
+  rm -f $PREFIX/lib/libftdi1.*
+  rm -f $PREFIX/lib/pkgconfig/libftdi*
+
+  exit
+fi
+
 # Install dependencies
 echo "Installing dependencies..."
 sudo apt-get install cmake  git-core gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf zip
@@ -60,11 +80,11 @@ make install
 
 # Cross compile one example
 cd ../examples
-$HOST-gcc find_all.c -o find_all.exe -I ../src $PREFIX/lib/libftdi1.a \
+$HOST-gcc find_all.c -o find_all -I ../src $PREFIX/lib/libftdi1.a \
           $PREFIX/lib/libusb-1.0.a -L $PREFIX/lib -lpthread
 
 # TAR the executable file and move it to the main directory
-tar vzcf $ZIPEXAMPLE find_all.exe
+tar vzcf $ZIPEXAMPLE find_all
 mv $ZIPEXAMPLE $WORK/$PACK_DIR
 
 # Create the tarball
