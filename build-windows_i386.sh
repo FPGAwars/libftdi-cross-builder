@@ -25,6 +25,32 @@ GITREPO=git://developer.intra2net.com/libftdi
 # Store current dir
 WORK=$PWD
 
+# -- TARGET: CLEAN. Remove the build dir and the generated packages
+# --  then exit
+if [ "$1" == "clean" ]; then
+  echo "-----> CLEAN"
+
+  # Remove the build directory
+  rm -f -r $BUILD_DIR
+
+  # Removed the packages generated
+  rm -f $PWD/$PACK_DIR/$NAME-$ARCH-*.tar.gz
+  rm -f $PWD/$PACK_DIR/$NAME-$ARCH-*.zip
+  rm -f $PWD/$PACK_DIR/$EXAMPLE-$ARCH-*.zip
+
+  #-- Remove the installed libftdi
+  cd $PREFIX
+  rm -f $PREFIX/bin/libftdi1-config
+  rm -f $PREFIX/bin/libftdi1.dll
+  rm -f -r $PREFIX/include/libftdi1
+  rm -f $PREFIX/lib/libftdi*
+  rm -f $PREFIX/lib/pkgconfig/libftdi*
+  rm -f -r $PREFIX/lib/cmake/libftdi1
+
+  exit
+fi
+
+
 # Install dependencies
 echo "Installing dependencies..."
 sudo apt-get install cmake  git-core mingw-w64 mingw-w64-tools zip
