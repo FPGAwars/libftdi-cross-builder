@@ -3,8 +3,8 @@
 #################################################
 
 BUILD=x86-unknown-linux-gnu
-HOST=x86_64-w64-mingw32
-TARGET=x86_64-w64-mingw32
+HOST=arm-linux-gnueabihf
+TARGET=arm-linux-gnueabihf
 
 NAME=libftdi
 ARCH=armhf
@@ -18,7 +18,7 @@ PACK_DIR=packages
 
 TARBALL=$PWD/$BUILD_DIR/$PACKNAME.tar.gz
 ZIPBALL=$PWD/$BUILD_DIR/$PACKNAME.zip
-ZIPEXAMPLE=find_all-example-$ARCH-$VERSION.zip
+ZIPEXAMPLE=find_all-example-$ARCH-$VERSION.tar.gz
 
 GITREPO=git://developer.intra2net.com/libftdi
 
@@ -56,21 +56,18 @@ cmake -DCMAKE_TOOLCHAIN_FILE=toolchain-armhf.cmake -DCMAKE_INSTALL_PREFIX=$PREFI
 make
 
 # Installation
-#make install
+make install
 
 # Cross compile one example
-#cd ../examples
-#$HOST-gcc find_all.c -o find_all.exe -I ../src -L $PREFIX/lib -static -lftdi1 -lusb-1.0
+cd ../examples
+$HOST-gcc find_all.c -o find_all.exe -I ../src $PREFIX/lib/libftdi1.a \
+          $PREFIX/lib/libusb-1.0.a -L $PREFIX/lib -lpthread
 
-# Zip the .exe file and move it to the main directory
-#zip $ZIPEXAMPLE find_all.exe
-#mv $ZIPEXAMPLE $WORK/$PACK_DIR
+# TAR the executable file and move it to the main directory
+tar vzcf $ZIPEXAMPLE find_all.exe
+mv $ZIPEXAMPLE $WORK/$PACK_DIR
 
 # Create the tarball
-#cd $PREFIX
-#tar vzcf $TARBALL *
-#mv $TARBALL $WORK/$PACK_DIR
-
-# Create the zipball
-#zip -r $ZIPBALL *
-#mv $ZIPBALL $WORK/$PACK_DIR
+cd $PREFIX
+tar vzcf $TARBALL *
+mv $TARBALL $WORK/$PACK_DIR
