@@ -27,6 +27,28 @@ GITREPO=git://developer.intra2net.com/libftdi
 # Store current dir
 WORK=$PWD
 
+# -- TARGET: CLEAN. Remove the build dir and the generated packages
+# --  then exit
+if [ "$1" == "clean" ]; then
+  echo "-----> CLEAN"
+
+  # Remove the build directory
+  rm -f -r $BUILD_DIR
+
+  # Remove the packages generated
+  rm -f $PWD/$PACK_DIR/$EXAMPLE-$ARCH-*.tar.gz
+
+  # Remove the installed libftdi
+  cd $PREFIX
+  rm -f -r $PREFIX/include/libftdi1
+  rm -f $PREFIX/lib/libftdi1.*
+  rm -f $PREFIX/lib/pkgconfig/libftdi*
+
+  exit
+fi
+
+
+
 # Install dependencies
 echo "Installing dependencies..."
 sudo apt-get install  zip gcc-multilib g++-multilib libudev-dev:i386 libftdi-dev:i386 libftdi1:i386
